@@ -104,10 +104,12 @@ button:active {
 }
 
 .listagem p {
+    height: 4.8em;          /* Adjust if needed (1.6em * 3 lines) */
     display: -webkit-box;
     -webkit-line-clamp: 5;    /* Limit to 3 lines */
     -webkit-box-orient: vertical;
-    overflow: hidden;
+    overflow-wrap: break-word;
+    overflow: auto;
     text-overflow: ellipsis;
     max-height: 4.8em;        /* Adjust if needed (1.6em * 3 lines) */
 }
@@ -128,6 +130,7 @@ button:active {
     top: 0.5rem;
     right: 0.5rem;
     animation: var(--animate-ping);
+    cursor: pointer;
 }
 
 .status-feito {
@@ -138,6 +141,7 @@ button:active {
     position: absolute;
     top: 0.5rem;
     right: 0.5rem;
+    cursor: pointer;
 }
 
 @keyframes ping {

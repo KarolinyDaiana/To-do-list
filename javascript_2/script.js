@@ -72,10 +72,15 @@ async function editarStatusCard(id, statusVelho) {
 }
 
 
-async function carregarDados() {
-    const retornoDaPromessa = await fetch(URL);
+async function carregarDados(filtro) {
+    const URLNova = filtro ? `${URL}?filter=${filtro}` : `${URL}`;
+    const retornoDaPromessa = await fetch(`${URLNova}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    });
     const converteAPromessa = await retornoDaPromessa.json()
-    console.log(converteAPromessa);
     for (let i = 0; i < converteAPromessa.length; i++) {
         criarCard(converteAPromessa[i].id, converteAPromessa[i].title, converteAPromessa[i].status);
     }
@@ -94,89 +99,65 @@ botaoAdicionar.onclick = () => {
     }
 
     inputAdicionar.value = "";
-
-    // const listaDePostagem = document.getElementById("listaDePostagem");
-    // const divBotao = document.createElement('div');
-    // const articleCard = document.createElement("li");
-    // articleCard.innerHTML = inputAdicionar.value
-    // articleCard.className = inputAdicionar.value
-    // const botaoRemover = document.createElement("button");
-    // botaoRemover.innerHTML = "REMOVER";
-    // botaoRemover.onclick = () => {
-    //     articleCard.remove();
-    // };
-    // const botaoEditar = document.createElement("button");
-    // botaoEditar.innerHTML = "EDITAR";
-    // botaoEditar.onclick = () => {
-    //     const novoValor = prompt(`Digite o novo valor para o item: `);
-    //     articleCard.innerText = novoValor;
-    //     articleCard.className = novoValor;
-    //     divBotao.appendChild(botaoRemover);
-    //     divBotao.appendChild(botaoEditar);
-    //     articleCard.appendChild(divBotao);
-    // };
-    // divBotao.appendChild(botaoRemover);
-    // divBotao.appendChild(botaoEditar);
-    // articleCard.appendChild(divBotao);
-    // listaDePostagem.appendChild(articleCard)
-
 };
 
 const botaoFiltro = document.getElementById("botaoFiltro");
 
 botaoFiltro.onclick = () => {
     const listaDePostagem = document.getElementById("listaDePostagem");
-    for (let i = 0; i < listaDePostagem.childElementCount; i++) {
-        const card = listaDePostagem.children[i];
-        const pTexto = card.querySelector('p');
-        if (!pTexto.className.includes(filtro.value)) {
-            card.style.display = "none";
-        } else {
-            card.style.display = "";
-        }
+    for (let i = listaDePostagem.childElementCount - 1; i >= 0; i--) {
+        listaDePostagem.children[i].remove();
     }
+
+    if (filtro.value === "") {
+        carregarDados();
+        return;
+    } else if (filtro.value.length > 0) {
+        carregarDados(filtro.value);
+    }
+
 }
 
 const criarCard = (id, title, status) => {
     const listaDePostagem = document.getElementById("listaDePostagem");
 
-        const articleCard = document.createElement("Article");
-        articleCard.id = id;
+    const articleCard = document.createElement("Article");
+    articleCard.id = id;
 
-        const statusDiv = document.createElement("div");
-        statusDiv.className = 'status-' + status;
-        statusDiv.onclick = () => {
-            const statusAtual = statusDiv.className.split('-')[1];
-            editarStatusCard(articleCard.id, statusAtual);
-        }
-        articleCard.appendChild(statusDiv);
+    const statusDiv = document.createElement("div");
+    statusDiv.className = 'status-' + status;
+    statusDiv.onclick = () => {
+        const statusAtual = statusDiv.className.split('-')[1];
+        editarStatusCard(articleCard.id, statusAtual);
+    }
+    articleCard.appendChild(statusDiv);
 
-        const pTexto = document.createElement("p");
-        pTexto.innerHTML = title;
-        pTexto.className = title;
-        articleCard.appendChild(pTexto);
+    const pTexto = document.createElement("p");
+    pTexto.innerHTML = title;
+    pTexto.className = title;
+    articleCard.appendChild(pTexto);
 
-        const divBotao = document.createElement("div");
-        divBotao.className = 'buttons';
+    const divBotao = document.createElement("div");
+    divBotao.className = 'buttons';
 
-        const botaoRemover = document.createElement("button");
-        botaoRemover.className = 'remover';
-        botaoRemover.innerHTML = "REMOVER";
-        botaoRemover.onclick = () => {
-            removerCard(articleCard.id)
-        };
+    const botaoRemover = document.createElement("button");
+    botaoRemover.className = 'remover';
+    botaoRemover.innerHTML = "REMOVER";
+    botaoRemover.onclick = () => {
+        removerCard(articleCard.id)
+    };
 
-        const botaoEditar = document.createElement("button");
-        botaoEditar.className = 'editar';
-        botaoEditar.innerHTML = "EDITAR";
-        botaoEditar.onclick = () => {
-            const novoValor = prompt(`Digite o novo valor para o item: `);
-            editarTitleCard(articleCard.id, novoValor);
-        };
-        divBotao.appendChild(botaoRemover);
-        divBotao.appendChild(botaoEditar);
-        articleCard.appendChild(divBotao);
-        listaDePostagem.appendChild(articleCard);
+    const botaoEditar = document.createElement("button");
+    botaoEditar.className = 'editar';
+    botaoEditar.innerHTML = "EDITAR";
+    botaoEditar.onclick = () => {
+        const novoValor = prompt(`Digite o novo valor para o item: `);
+        editarTitleCard(articleCard.id, novoValor);
+    };
+    divBotao.appendChild(botaoRemover);
+    divBotao.appendChild(botaoEditar);
+    articleCard.appendChild(divBotao);
+    listaDePostagem.appendChild(articleCard);
 }
 
 carregarDados();

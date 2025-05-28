@@ -11,6 +11,15 @@ let tarefa = [{id: 1, title: 'Tarefa 1', status: 'pendente'}];
 let idSequence = 1;
 
 app.get('/tarefa', (req, res) => {
+
+    const { filter } = req.query;
+
+    if (filter) {
+        const filteredTarefas = tarefa.filter(t => t.title.includes(filter));
+        res.json(filteredTarefas);
+        return;
+    }
+
     res.json(tarefa);
 });
 

@@ -4,7 +4,7 @@ const cors = require('cors');
 app.use(express.json());
 
 app.use(cors({
-  origin: '*' // <- para testes e desenvolvimento
+  origin: '*'
 }));
 
 let tarefa = [{id: 1, title: 'Tarefa 1', status: 'pendente'}];
@@ -54,7 +54,7 @@ app.put('/tarefa/:id/title', (req, res) => {
     }
 
     if (!title) {
-        res.status(400).json({error: "Nome e status são obrigatórios"});
+        res.status(400).json({error: "Nome é obrigatório"});
         return;
     }
 
@@ -74,7 +74,7 @@ app.put('/tarefa/:id/status', (req, res) => {
     }
 
     if (!status) {
-        res.status(400).json({error: "Nome e status são obrigatórios"});
+        res.status(400).json({error: "Status é obrigatório"});
         return;
     }
 
@@ -98,11 +98,3 @@ app.delete('/tarefa/:id', (req, res) => {
 app.listen(8000, () => {
     console.log('Servidor rodando na porta 8000');
 });
-
-// fetch('http://localhost:3000/tarefa', {
-//     method: 'POST',
-//     headers: {
-//         'Content-Type': 'application/json'
-//     },
-//     body: JSON.stringify({ nome: 'Tarefa 2', status: 'pendente' })
-// })

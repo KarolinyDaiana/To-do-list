@@ -14,21 +14,26 @@ async function removerCard(id) {
 }
 
 async function adicionarCard(title) {
-    const response = await fetch(URL, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ title, status: 'pendente' })
-    });
-
-    if (response.ok) {
-        const converteAPromessa = await response.json()
-        criarCard(converteAPromessa.id, converteAPromessa.title, converteAPromessa.status);
-        console.log('Card adicionado com sucesso');
-    } else {
-        console.error('Erro ao adicionar o card');
+    try {
+        const response = await fetch(URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ title, status: 'pendente' })
+        });
+    
+        if (response.ok) {
+            const converteAPromessa = await response.json()
+            criarCard(converteAPromessa.id, converteAPromessa.title, converteAPromessa.status);
+            console.log('Card adicionado com sucesso');
+        } else {
+            throw new Error('Resposta da API não foi OK');
+        }
+    } catch (error) {
+        console.error('Erro ao adicionar o card:', error);
     }
+    
 }
 
 async function editarTitleCard(id, novoValor) {

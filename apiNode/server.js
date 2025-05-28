@@ -62,7 +62,7 @@ app.put('/tarefa/:id/title', (req, res) => {
     res.json(tarefa[tarefaIndex]);
 });
 
-app.put('/tarefa/:id/status', (req, res) => {
+app.patch('/tarefa/:id/status', (req, res) => {
     const { id } = req.params;
     const { status } = req.body;
 

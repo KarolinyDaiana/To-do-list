@@ -60,7 +60,7 @@ async function editarStatusCard(id, statusVelho) {
     const novoStatus = statusVelho === 'pendente' ? 'feito' : 'pendente';
 
     const response = await fetch(`${URL}/${id}/status`, {
-        method: 'PUT',
+        method: 'PATCH',
         headers: {
             'Content-Type': 'application/json'
         },
@@ -147,14 +147,14 @@ const criarCard = (id, title, status) => {
 
     const botaoRemover = document.createElement("button");
     botaoRemover.className = 'remover';
-    botaoRemover.innerHTML = "REMOVER";
+    botaoRemover.innerHTML = "Remover";
     botaoRemover.onclick = () => {
         removerCard(articleCard.id)
     };
 
     const botaoEditar = document.createElement("button");
     botaoEditar.className = 'editar';
-    botaoEditar.innerHTML = "EDITAR";
+    botaoEditar.innerHTML = "Editar";
     botaoEditar.onclick = () => {
         const novoValor = prompt(`Digite o novo valor para o item: `);
         editarTitleCard(articleCard.id, novoValor);
